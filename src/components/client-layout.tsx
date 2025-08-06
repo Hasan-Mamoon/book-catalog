@@ -6,7 +6,7 @@ import Footer from './footer';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const hideNavbarFooterOn = ['/login', '/register'];
+  const hideNavbarFooterOn = ['/auth/signin', '/auth/register'];
   const shouldHideNavbarFooter = hideNavbarFooterOn.includes(pathname);
 
   return (

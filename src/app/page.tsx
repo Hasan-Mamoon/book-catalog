@@ -61,7 +61,7 @@ export default function Home() {
 
           <div className="text-center mt-8">
             <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors" onClick={()=>{router.push("/add-books")}}>
-              Add Your First Book
+              Add a Book
             </button>
           </div>
         </div>

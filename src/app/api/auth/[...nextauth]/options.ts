@@ -50,7 +50,7 @@ export const options: NextAuthOptions = {
 
   ],
   pages:{
-    signIn:"/login"
+    signIn:"/auth/signin"
   }
   
 

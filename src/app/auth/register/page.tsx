@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { supabase } from '@/lib/supabase-admin';
 import bcrypt from 'bcrypt';
+import Link from 'next/link';
 
 
 async function signupAction(formData: FormData) {
@@ -36,29 +37,29 @@ async function signupAction(formData: FormData) {
     throw new Error('Failed to create account');
   }
 
-  redirect('/login');
+  redirect('/auth/signin');
 }
 
 export default function SignupPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold">
             Create your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm">
             Or{' '}
-            <a href="/login" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
               sign in to your existing account
-            </a>
+            </Link>
           </p>
         </div>
         
         <form action={signupAction} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="username" className="block text-sm font-medium">
                 Full Name
               </label>
               <input
@@ -72,7 +73,7 @@ export default function SignupPage() {
             </div>
             
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium">
                 Email Address
               </label>
               <input
@@ -86,7 +87,7 @@ export default function SignupPage() {
             </div>
             
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium">
                 Password
               </label>
               <input
