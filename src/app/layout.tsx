@@ -1,7 +1,6 @@
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
+import ClientLayout from "../components/client-layout";
 
 export const metadata = {
   title: "books",
@@ -17,9 +16,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col">
         <AuthProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
+
+          <ClientLayout>{children}</ClientLayout>
+          
         </AuthProvider>
       </body>
     </html>
