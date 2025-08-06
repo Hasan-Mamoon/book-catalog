@@ -20,7 +20,7 @@ export async function GET() {
       console.error("Database error:", error.message);
       return NextResponse.json(
         { error: "Failed to fetch books" },
-        { status: 500 }
+        { status: 500 },
       );
     }
     return NextResponse.json({ books });
@@ -49,13 +49,13 @@ export async function POST(req: NextRequest) {
       console.log("Databse error", error.message);
       return NextResponse.json(
         { error: "Failed to create book" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     return NextResponse.json(
       { message: "Book created successfully", book: newBook },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.log("Api error", error);
@@ -76,7 +76,7 @@ export async function DELETE(req: NextRequest) {
     if (!bookId) {
       return NextResponse.json(
         { error: "Book id is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const { data: existingBook, error: fetchError } = await supabase
@@ -89,7 +89,7 @@ export async function DELETE(req: NextRequest) {
     if (fetchError || !existingBook) {
       return NextResponse.json(
         { error: "Book not found or access denied" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     const { error: deleteError } = await supabase
@@ -99,13 +99,16 @@ export async function DELETE(req: NextRequest) {
       .eq("userId", session?.user.id);
 
     if (deleteError) {
-      console.log("Error deleting book: ",deleteError.message)
+      console.log("Error deleting book: ", deleteError.message);
       return NextResponse.json(
         { error: "Failed to delete book" },
-        { status: 500 }
+        { status: 500 },
       );
     }
-    return NextResponse.json({message:"Book deleted successfully"},{status:200})
+    return NextResponse.json(
+      { message: "Book deleted successfully" },
+      { status: 200 },
+    );
   } catch (error) {
     console.log("Api error", error);
     return NextResponse.json({ error: "Server Error" }, { status: 500 });
