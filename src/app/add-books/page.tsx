@@ -41,7 +41,7 @@ export default function AddBooksPage() {
       setGenre("");
 
       setTimeout(() => {
-        router.push("/#catalogue");
+        router.push("/dashboard/#catalogue");
       }, 2000);
     } catch (error) {
       console.log("Error:", error);
@@ -205,7 +205,7 @@ export default function AddBooksPage() {
             <button
               type="button"
               onClick={() => {
-                router.push("/#catalogue");
+                router.push("/dashboard/#catalogue");
               }}
               className="w-full flex justify-center items-center py-2.5 sm:py-3 px-4 border border-gray-300 rounded-md shadow-sm text-sm sm:text-base font-medium text-gray-300 bg-gray-500 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
             >

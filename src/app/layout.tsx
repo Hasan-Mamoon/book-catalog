@@ -1,6 +1,7 @@
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import ClientLayout from "../components/client-layout";
+import { Theme } from "@radix-ui/themes";
 
 export const metadata = {
   title: "Books Catalogue",
@@ -15,8 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
+        
         <AuthProvider>
+          <Theme>
           <ClientLayout>{children}</ClientLayout>
+          </Theme>
         </AuthProvider>
       </body>
     </html>

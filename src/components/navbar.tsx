@@ -1,302 +1,253 @@
-// "use client";
+'use Client'
 
-// import { useState } from "react";
-// import { useSession, signOut } from "next-auth/react";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { usePathname } from "next/navigation";
-
-// const Navbar = () => {
-//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-//   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-//   const { data: session } = useSession();
-//   const pathname = usePathname();
-
-//     const isActive = (path: string) => {
-//     return pathname === path;
-//   };
-
-//     const getLinkClasses = (path: string) => {
-//     const baseClasses = "block py-2 px-3 rounded-sm md:p-0 transition-colors";
-
-//     if (isActive(path)) {
-//       // Active link styles
-//       return `${baseClasses} text-white bg-blue-700 md:bg-transparent md:text-blue-700 md:dark:text-blue-500`;
-//     } else {
-//       // Inactive link styles
-//       return `${baseClasses} text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`;
-//     }
-//   };
-
-//   return (
-//     <nav className="bg-white border-gray-200 dark:bg-gray-900">
-//       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-//         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-//           Book Catalog
-//         </span>
-
-//         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-//           {/* User Profile Dropdown */}
-//           {session?.user && (
-//             <div className="relative">
-//               <button
-//                 type="button"
-//                 className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-//                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-//               >
-//                 <span className="sr-only">Open user menu</span>
-//                 {session?.user.image ? (
-//                   <Image
-//                     className="w-8 h-8 rounded-full"
-//                     src={session.user.image}
-//                     alt="user photo"
-//                     width={32}
-//                     height={32}
-//                     priority={true}
-//                   />
-//                 ) : (
-//                   <span className="text-white font-medium text-sm">
-//                     {session.user.name?.charAt(0).toUpperCase()}
-//                   </span>
-//                 )}
-//               </button>
-
-//               {/* Dropdown menu */}
-//               {isDropdownOpen && (
-//                 <div className="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600">
-//                   <div className="px-4 py-3">
-//                     <span className="block text-sm text-gray-900 dark:text-white">
-//                       {session?.user.name}
-//                     </span>
-//                     <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-//                       {session?.user.email}
-//                     </span>
-//                   </div>
-//                   <ul className="py-2">
-//                     <li>
-//                       <button
-//                         onClick={() => {
-//                           signOut({ callbackUrl: "/auth/signin" });
-//                           setIsDropdownOpen(false); // Close dropdown after clicking
-//                         }}
-//                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-//                       >
-//                         Sign out
-//                       </button>
-//                     </li>
-//                   </ul>
-//                 </div>
-//               )}
-//             </div>
-//           )}
-
-//           {/* Mobile menu button */}
-//           <button
-//             type="button"
-//             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-//             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-//           >
-//             <span className="sr-only">Open main menu</span>
-//             <svg
-//               className="w-5 h-5"
-//               aria-hidden="true"
-//               xmlns="http://www.w3.org/2000/svg"
-//               fill="none"
-//               viewBox="0 0 17 14"
-//             >
-//               <path
-//                 stroke="currentColor"
-//                 strokeLinecap="round"
-//                 strokeLinejoin="round"
-//                 strokeWidth="2"
-//                 d="M1 1h15M1 7h15M1 13h15"
-//               />
-//             </svg>
-//           </button>
-//         </div>
-
-//         {/* Navigation menu */}
-//         <div
-//           className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-//             isMobileMenuOpen ? "block" : "hidden"
-//           }`}
-//         >
-//           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-//             <li>
-//               <Link
-//                 href="/"
-//                className={getLinkClasses("/")}
-//               >
-//                 Home
-//               </Link>
-//             </li>
-//             <li>
-//               <Link
-//                 href="/add-books"
-//                 className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-//               >
-//                 Add Books
-//               </Link>
-//             </li>
-//           </ul>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
-"use client";
-
-import { useState } from "react";
-import { useSession, signOut } from "next-auth/react";
-import { usePathname } from "next/navigation"; // Add this import
+import { useState, useEffect } from "react";
+import { BookOpen, Menu, X } from "lucide-react";
+import { Button } from "@radix-ui/themes";
 import Image from "next/image";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
-const Navbar = () => {
+export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const { data: session } = useSession();
-  const pathname = usePathname();
 
-  const isActive = (path: string) => {
-    return pathname === path;
-  };
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const getLinkClasses = (path: string) => {
-    const baseClasses = "block py-2 px-3 rounded-sm md:p-0 transition-colors";
-
-    if (isActive(path)) {
-      return `${baseClasses} text-white bg-blue-700 md:bg-transparent md:text-blue-700 md:dark:text-blue-500`;
-    } else {
-      return `${baseClasses} text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`;
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isDropdownOpen && !(event.target as Element)?.closest('.user-dropdown')) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isDropdownOpen]);
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link
-          href="/"
-          className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white hover:text-blue-700 transition-colors"
-        >
-          Book Catalog
-        </Link>
+    <>
+      {/* Navigation */}
+      <nav
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          scrollY > 50
+            ? "bg-white/90 backdrop-blur-md shadow-sm"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center space-x-2">
+              <BookOpen className="h-8 w-8 text-blue-600" />
+              <span className="text-xl font-bold text-gray-900">Books Catalogue</span>
+            </div>
 
-        <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          {/* User Profile Dropdown */}
-          {session?.user && (
-            <div className="relative">
-              <button
-                type="button"
-                className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              >
-                <span className="sr-only">Open user menu</span>
-                {session?.user.image ? (
-                  <Image
-                    className="w-8 h-8 rounded-full"
-                    src={session.user.image}
-                    alt="user photo"
-                    width={32}
-                    height={32}
-                    priority={true}
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
-                    <span className="text-white font-medium text-sm">
-                      {session.user.name?.charAt(0).toUpperCase()}
-                    </span>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              {session ? (
+                <>
+                  <Link
+                    href="/add-books"
+                    className="text-gray-700 hover:text-blue-600 transition-colors"
+                  >
+                    Add Books
+                  </Link>
+                  
+                  {/* User Profile Dropdown */}
+                  <div className="relative user-dropdown">
+                    <button
+                      type="button"
+                      className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    >
+                      <span className="sr-only">Open user menu</span>
+                      {session?.user.image ? (
+                        <Image
+                          className="w-8 h-8 rounded-full"
+                          src={session.user.image}
+                          alt="user photo"
+                          width={32}
+                          height={32}
+                          priority={true}
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+                          <span className="text-white font-medium text-sm">
+                            {session.user.name?.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                    </button>
+                    
+                    {/* Dropdown menu */}
+                    {isDropdownOpen && (
+                      <div className="absolute right-0 z-50 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600">
+                        <div className="px-4 py-3">
+                          <span className="block text-sm text-gray-900 dark:text-white">
+                            {session?.user.name}
+                          </span>
+                          <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                            {session?.user.email}
+                          </span>
+                        </div>
+                        <ul className="py-2">
+                          <li>
+                            <button
+                              onClick={() => {
+                                signOut({ callbackUrl: "/" });
+                                setIsDropdownOpen(false);
+                              }}
+                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                            >
+                              Sign out
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                )}
-              </button>
-
-              {/* Dropdown menu */}
-              {isDropdownOpen && (
-                <div className="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600">
-                  <div className="px-4 py-3">
-                    <span className="block text-sm text-gray-900 dark:text-white">
-                      {session?.user.name}
-                    </span>
-                    <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                      {session?.user.email}
-                    </span>
-                  </div>
-                  <ul className="py-2">
-                    <li>
-                      <button
-                        onClick={() => {
-                          signOut({ callbackUrl: "/auth/signin" });
-                          setIsDropdownOpen(false);
-                        }}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >
-                        Sign out
-                      </button>
-                    </li>
-                  </ul>
-                </div>
+                </>
+              ) : (
+                <>
+                  <a
+                    href="#features"
+                    className="text-gray-700 hover:text-blue-600 transition-colors"
+                  >
+                    Features
+                  </a>
+                  <a
+                    href="#testimonials"
+                    className="text-gray-700 hover:text-blue-600 transition-colors"
+                  >
+                    Reviews
+                  </a>
+                  <Button
+                    variant="outline"
+                    className="mr-2"
+                    onClick={() => (window.location.href = "/auth/signin")}
+                  >
+                    Sign In
+                  </Button>
+                  <Button
+                    className="bg-blue-600 hover:bg-blue-700"
+                    onClick={() => (window.location.href = "/auth/register")}
+                  >
+                    Get Started
+                  </Button>
+                </>
               )}
             </div>
-          )}
 
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
-            </svg>
-          </button>
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
 
-        {/* Navigation menu */}
-        <div
-          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-            isMobileMenuOpen ? "block" : "hidden"
-          }`}
-        >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            <li>
-              <Link
-                href="/"
-                className={getLinkClasses("/")}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/add-books"
-                className={getLinkClasses("/add-books")}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Add Books
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white border-t shadow-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {session ? (
+                <>
+                  <Link
+                    href="/add-books"
+                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Add Books
+                  </Link>
+                  
+                  {/* Mobile User Info */}
+                  <div className="border-t pt-2 mt-2">
+                    <div className="px-3 py-2">
+                      <div className="flex items-center space-x-3">
+                        {session?.user.image ? (
+                          <Image
+                            className="w-8 h-8 rounded-full"
+                            src={session.user.image}
+                            alt="user photo"
+                            width={32}
+                            height={32}
+                            priority={true}
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+                            <span className="text-white font-medium text-sm">
+                              {session.user.name?.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {session?.user.name}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {session?.user.email}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        signOut({ callbackUrl: "/" });
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <a
+                    href="#features"
+                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Features
+                  </a>
+                  <a
+                    href="#testimonials"
+                    className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Reviews
+                  </a>
+                  <div className="flex flex-col space-y-2 px-3 py-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => (window.location.href = "/auth/signin")}
+                    >
+                      Sign In
+                    </Button>
+                    <Button
+                      className="bg-blue-600 hover:bg-blue-700"
+                      onClick={() => (window.location.href = "/auth/register")}
+                    >
+                      Get Started
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </nav>
+    </>
   );
-};
-
-export default Navbar;
+}

@@ -1,155 +1,270 @@
 "use client";
-import { useSession } from "next-auth/react";
-import Card from "@/components/card";
-import { useRouter } from "next/navigation";
-import useBooks from "@/hooks/useBooks";
+
+import { useState, useEffect } from 'react';
+import { Button } from "@radix-ui/themes";
+import { Card} from '@radix-ui/themes'
+import { 
+  Search, 
+  TrendingUp, 
+  Users, 
+  Star, 
+  Heart, 
+  BarChart3, 
+  Sparkles,
+  ChevronRight,
+  BookMarked,
+  Library,
+  Target
+} from 'lucide-react';
 
 export default function Home() {
-  const { data: session } = useSession();
-  const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
-  const { books, loading, error, refetch } = useBooks({ limit: 8 });
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  const deleteBook = async (bookId: string) => {
-    console.log("deleting book", bookId);
-    try {
-      const response = await fetch(`/api/books?bookId=${bookId}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        console.log(response);
-        throw new Error("Failed to delete book");
-      }
-      refetch();
-    } catch (error) {
-      console.log("Error:", error);
+  const features = [
+    {
+      icon: Sparkles,
+      title: "Personalised Catalogue",
+      description: "AI-powered recommendations based on your reading history, preferences, and mood. Discover your next favorite book with intelligent suggestions."
+    },
+    {
+      icon: Search,
+      title: "Smart Discovery",
+      description: "Advanced search with filters by genre, author, rating, and reading time. Find exactly what you're looking for or explore something new."
+    },
+    {
+      icon: BarChart3,
+      title: "Reading Analytics",
+      description: "Track your reading progress, set goals, and visualize your reading journey with beautiful charts and insights."
+    },
+    {
+      icon: Heart,
+      title: "Personal Collections",
+      description: "Create custom reading lists, mark favorites, and organize your books into collections that matter to you."
+    },
+    {
+      icon: Users,
+      title: "Reading Community",
+      description: "Connect with fellow book lovers, share reviews, and discover what others in your network are reading."
+    },
+    {
+      icon: Target,
+      title: "Reading Goals",
+      description: "Set and achieve reading goals with progress tracking, reminders, and celebrating your milestones."
     }
-  };
+  ];
+
+  const stats = [
+    { number: "50K+", label: "Active Readers" },
+    { number: "2M+", label: "Books Catalogued" },
+    { number: "98%", label: "Satisfaction Rate" },
+    { number: "15M+", label: "Books Read" }
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Chen",
+      role: "Book Enthusiast",
+      content: "This app completely transformed how I discover books. The personalized recommendations are spot-on!",
+      rating: 5
+    },
+    {
+      name: "Marcus Johnson",
+      role: "Literature Professor",
+      content: "Perfect for managing my extensive reading list. The analytics help me track my reading patterns.",
+      rating: 5
+    },
+    {
+      name: "Emma Williams",
+      role: "Avid Reader",
+      content: "Love the community features. I've discovered so many great books through other readers' recommendations.",
+      rating: 5
+    }
+  ];
 
   return (
-    <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
-      <section
-        id="welcome"
-        className="h-screen flex items-center justify-center snap-start px-4"
-      >
-        <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <p className="text-4xl sm:text-6xl lg:text-8xl font-bold">
-            Welcome,{" "}
-            <span className="text-blue-600">
-              Mr.
-              {session?.user?.name?.split(" ")[0] ||
-                session?.user?.name ||
-                "User"}
-            </span>
-          </p>
-          <p className="text-2xl sm:text-3xl lg:text-4xl">Today is {today}</p>
-
-          <div className="flex flex-col items-center space-y-4 animate-bounce pt-8">
-            <p className="text-base sm:text-lg text-gray-400 font-medium">
-              Scroll down to continue to catalogue
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        {/* Hero Section */}
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
+              <Sparkles className="h-4 w-4 mr-2" />
+              AI-Powered Book Discovery
+            </div>
+            
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              Your Personal
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Library</span>
+              <br />
+              Reimagined
+            </h1>
+            
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Discover, track, and enjoy your reading journey with AI-powered recommendations, 
+              smart analytics, and a vibrant community of book lovers.
             </p>
-            <div className="flex flex-col space-y-1">
-              <div className="w-6 h-6 border-r-2 border-b-2 border-gray-600 transform rotate-45 animate-pulse"></div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button size="3" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3" onClick={() => window.location.href = '/auth/signin'}>
+                Start Reading Today
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button size="3" variant="outline" className="px-8 py-3">
+                Watch Demo
+              </Button>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Book Catalog */}
-      <section
-        id="catalogue"
-        className="h-screen snap-start bg-gray-800 overflow-y-auto"
-      >
-        <div className="h-full flex flex-col py-8 sm:py-12">
-          <div className="max-w-6xl mx-auto px-4 w-full flex-1 flex flex-col">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 text-white">
-              Your Books:
-            </h2>
-
-            <div className="flex-1 overflow-y-auto">
-              {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                  {[...Array(8)].map((_, i) => (
-                    <Card key={i} className="animate-pulse">
-                      <div className="h-4 bg-gray-500 rounded mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded"></div>
-                    </Card>
-                  ))}
-                </div>
-              ) : error ? (
-                <div className="max-w-md mx-auto">
-                  <Card className="text-center text-red-600">
-                    <p>Error loading books: {error}</p>
-                  </Card>
-                </div>
-              ) : books.length === 0 ? (
-                <div className="max-w-md mx-auto">
-                  <Card className="text-center">
-                    <div className="py-8">
-                      <p className="text-gray-600 mb-4">
-                        No books in your collection yet
-                      </p>
-                      <button
-                        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-                        onClick={() => router.push("/add-books")}
-                      >
-                        Add Your First Book
-                      </button>
+            {/* Hero Image/Illustration Placeholder */}
+            <div className="mt-16 relative">
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 mx-auto max-w-4xl shadow-2xl">
+                <div className="bg-white rounded-xl p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-3">
+                    <div className="h-32 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
+                      <BookMarked className="h-12 w-12 text-blue-600" />
                     </div>
-                  </Card>
+                    <div className="h-2 bg-blue-200 rounded"></div>
+                    <div className="h-2 bg-blue-100 rounded w-3/4"></div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-32 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center">
+                      <Library className="h-12 w-12 text-purple-600" />
+                    </div>
+                    <div className="h-2 bg-purple-200 rounded"></div>
+                    <div className="h-2 bg-purple-100 rounded w-2/3"></div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-32 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="h-12 w-12 text-indigo-600" />
+                    </div>
+                    <div className="h-2 bg-indigo-200 rounded"></div>
+                    <div className="h-2 bg-indigo-100 rounded w-4/5"></div>
+                  </div>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 pb-4">
-                  {books.map((book) => (
-                    <Card
-                      key={book.id}
-                      title={book.title}
-                      subtitle={`by ${book.author}`}
-                      className="hover:shadow-lg transition-shadow"
-                    >
-                      <div className="text-center py-4">
-                        <div className="w-12 h-16 sm:w-16 sm:h-20 bg-blue-600 rounded mx-auto mb-3 flex items-center justify-center">
-                          <span className="text-white text-xl sm:text-2xl">
-                            📖
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => {
-                            const confirmed = confirm(
-                              "Are you sure you want to delete this book?",
-                            );
-                            if (confirmed) {
-                              deleteBook(book.id);
-                            }
-                          }}
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 sm:px-4 rounded text-sm sm:text-base transition-colors w-full sm:w-auto"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="text-center mt-4 sm:mt-6 py-4">
-              <button
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
-                onClick={() => router.push("/add-books")}
-              >
-                Add a Book
-              </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-white/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{stat.number}</div>
+                <div className="text-gray-600">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Everything You Need to Love Reading
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Powerful features designed to enhance your reading experience and help you discover your next favorite book.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm">
+               
+                  <div className="mb-4 p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg w-fit group-hover:scale-110 transition-transform">
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+               
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Loved by Readers Everywhere
+            </h2>
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+              Join thousands of satisfied readers who have transformed their reading experience with BookVault.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="bg-white/95 backdrop-blur-sm border-0">
+               
+                  <div className="flex mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 mb-4 leading-relaxed">&quot;{testimonial.content}&quot;</p>
+                  <div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                    <div className="text-gray-600 text-sm">{testimonial.role}</div>
+                  </div>
+                
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+            Ready to Transform Your Reading Journey?
+          </h2>
+          <p className="text-xl text-gray-600 mb-8">
+            Join thousands of readers who have already discovered their next favorite books with BookVault.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="4"  onClick={() => window.location.href = '/auth/signin'}>
+              Get Started Free
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button size="4" color="blue" variant="soft">
+              Learn More
+            </Button>
+          </div>
+          
+          <div className="mt-8 flex items-center justify-center space-x-6 text-sm text-gray-500">
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+              Free forever plan
+            </div>
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+              No credit card required
+            </div>
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+              Cancel anytime
+            </div>
+          </div>
+        </div>
+      </section>
+
+     
     </div>
   );
 }
