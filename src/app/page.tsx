@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { Button } from "@radix-ui/themes";
 import { Card} from '@radix-ui/themes'
 import { 
@@ -18,14 +20,45 @@ import {
 } from 'lucide-react';
 
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  // Redirect to dashboard if user is authenticated
+  useEffect(() => {
+    if (status === 'authenticated' && session) {
+      router.push('/dashboard');
+    }
+  }, [session, status, router]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleGetStarted = () => {
+    if (session) {
+      router.push('/dashboard');
+    } else {
+      router.push('/auth/signin');
+    }
+  };
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (session) {
+    return null;
+  }
 
   const features = [
     {
@@ -112,7 +145,7 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="3" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3" onClick={() => window.location.href = '/auth/signin'}>
+              <Button size="3" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3" onClick={handleGetStarted}>
                 Start Reading Today
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
@@ -238,7 +271,7 @@ export default function Home() {
             Join thousands of readers who have already discovered their next favorite books with BookVault.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="4"  onClick={() => window.location.href = '/auth/signin'}>
+            <Button size="4" onClick={handleGetStarted}>
               Get Started Free
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
